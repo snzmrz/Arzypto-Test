@@ -5,11 +5,19 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "watch": "npm run development -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
-    "vue": "^2.6.11"
+    "jquery": "^3.5.0",
+    "popper.js": "^1.16.1",
+    "vue": "^2.6.11",
+    "vue-websocket": "^0.2.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",

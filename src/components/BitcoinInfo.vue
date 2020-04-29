@@ -58,9 +58,6 @@
     import Chart from 'chart.js';
     export default {
         name: 'BitcoinInfo',
-        components:{
-            Chart
-        },
         data() {
             return {
                 Information: '',
@@ -70,16 +67,17 @@
                 Time:[],
                 priceUsd:[],
                 circulatingSupply:[],
-
             }
         },
         methods: {
             GetBicoinInfo() {
+                const axios = require('axios');
                 axios.get('https://api.coincap.io/v2/assets/bitcoin')
                     .then(response => this.Information = response.data.data)
                     .catch(err => console.log(err))
             },
             async GetChart(){
+                const axios = require('axios');
                 await axios.get('https://api.coincap.io/v2/assets/bitcoin/history?interval=m5&start=1587920154000&end=1588006554000')
                     .then((response) => {this.ChartInfo = response.data.data;
                     })
@@ -94,11 +92,10 @@
                     this.circulatingSupply.push(item.circulatingSupply);
                 }
 
-
             },
             DisplayChart(){
                 var ctx = this.$refs.priceUsd.getContext('2d');
-                var priceUsd = new Chart(ctx, {
+                var x = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: this.Time,
@@ -132,6 +129,7 @@
                         }
                     }
                 });
+                console.log(x)
             },
 
 
@@ -143,60 +141,47 @@
             //         .catch(err => console.log(err))
             // },
 
-            add() {
-                // Emit the server side
-                this.$socket.emit("add", { a: 5, b: 3 });
-            },
-
-            get() {
-                this.$socket.emit("get", { id: 12 }, (response) => {
-
-                });
-            }
+            // add() {
+            //     // Emit the server side
+            //     this.$socket.emit("add", { a: 5, b: 3 });
+            // },
+            //
+            // get() {
+            //     this.$socket.emit("get", { id: 12 }, (response) => {
+            //
+            //     });
+            // }
 
 
         },
-        socket: {
-            // Prefix for event names
-            // prefix: "/counter/",
 
-            // If you set `namespace`, it will create a new socket connection to the namespace instead of `/`
-            // namespace: "/counter",
-
-            events: {
-
-                // Similar as this.$socket.on("changed", (msg) => { ... });
-                // If you set `prefix` to `/counter/`, the event name will be `/counter/changed`
-                //
-                changed(msg) {
-                    console.log("Something changed: " + msg);
-                }
-
-                /* common socket.io events
-                connect() {
-                    console.log("Websocket connected to " + this.$socket.nsp);
-                },
-
-                disconnect() {
-                    console.log("Websocket disconnected from " + this.$socket.nsp);
-                },
-
-                error(err) {
-                    console.error("Websocket error!", err);
-                }
-                */
-
-            }
-        },
         async created() {
             this.GetBicoinInfo();
             await this.GetChart();
             this.DisplayChart()
         },
-
-
-
-
-
     }
 </script>
+<style>
+
+    .content{
+        padding-top: 50px;
+    }
+    .title{
+
+        font-weight: bold;
+    }
+    .table tr td:nth-child(even){
+        font-weight: bold;
+        text-align: right;
+    }
+    .table tr:nth-child(even){
+        background: #fef1f5;
+    }
+    .chartjs-render-monitor{
+        width: 1119px;
+        height: 480px;
+        margin: auto;
+    }
+
+</style>
